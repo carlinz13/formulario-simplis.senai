@@ -1,0 +1,115 @@
+
+const confirmar = document.getElementById('confirmar');
+
+let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+function CADASTROrodolfo() {
+
+    let ganibalda = {
+        nome: document.querySelector("#nome").value,
+        email: document.querySelector("#email").value,
+        senha: document.querySelector("#senha").value
+    };
+
+    usuarios.push(ganibalda);
+
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+    mosca();
+}
+
+function mosca() {
+
+    let cadastros1 = document.getElementById("cadastros");
+
+    cadastros1.innerHTML = "";
+
+    usuarios.forEach((usuario, index) => {
+
+        let div1 = document.createElement("div");
+
+        let nome2 = document.createElement("p");
+        nome2.innerHTML = usuario.nome;
+
+        let email2 = document.createElement("p");
+        email2.innerHTML = usuario.email;
+
+        let editar = document.createElement("button");
+        editar.innerHTML = "Editar";
+
+        editar.onclick = function() {
+            editarUsuario(index);
+        };
+
+        div1.appendChild(nome2);
+        div1.appendChild(email2);
+        div1.appendChild(editar);
+
+        cadastros1.appendChild(div1);
+
+    });
+}
+
+function editarUsuario(index) {
+
+    let novoNome = prompt("Digite o novo nome:");
+    let novoEmail = prompt("Digite o novo email:");
+
+    if (novoNome && novoEmail) {
+
+        usuarios[index].nome = novoNome;
+        usuarios[index].email = novoEmail;
+
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+        mosca();
+    }
+}
+
+// Mostrar os usuários salvos ao abrir a página
+mosca();
+
+
+
+function CADASTROrodolfo() {
+
+    const ganibalda = {
+        nome: document.querySelector("#nome").value.trim(),
+        email: document.querySelector("#email").value.trim(),
+        senha: document.querySelector("#senha").value
+    };
+
+    // Verifica se já existe outro usuário com o mesmo nome ou email
+    const existe = usuarios.some((usuario, index) => {
+
+        if (index === indiceEdicao) {
+            return false;
+        }
+
+        return usuario.nome.toLowerCase() === ganibalda.nome.toLowerCase() ||
+               usuario.email.toLowerCase() === ganibalda.email.toLowerCase();
+    });
+
+    if (existe) {
+        alert("Esse nome ou email já está cadastrado!");
+        return;
+    }
+
+    if (indiceEdicao === null) {
+
+        usuarios.push(ganibalda);
+        alert("Usuário cadastrado!");
+
+    } else {
+
+        usuarios[indiceEdicao] = ganibalda;
+        alert("Usuário atualizado!");
+
+        indiceEdicao = null;
+    }
+
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+    mosca();
+
+}
